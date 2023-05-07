@@ -10,4 +10,14 @@ typedef struct Node
     struct Node *nextOnColumn;
 } Node;
 
+/* Complexity: O(1);
+Only memory allocation and assignments.
+*/
+Node *node_construct(double, int, int, Node *, Node *);
+
+/* Complexity: O(1);
+Memory free only.
+*/
+void node_destroy(Node *);
+
 #endif
