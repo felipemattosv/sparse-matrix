@@ -1,6 +1,7 @@
 #include "matrix.h"
 #include "node.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 Matrix *matrix_construct(int numberOfLines, int numberOfColumns)
 {
@@ -28,4 +29,74 @@ void matrix_destroy(Matrix *m)
     free(m->linesHeads);
     free(m->columnsHeads);
     free(m);
+}
+
+Node *matrix_getLastNodeOfLine(Matrix *m, int line)
+{
+    Node *n = m->linesHeads[line];
+    
+    while (n->nextOnLine != NULL)
+        n = n->nextOnLine;
+
+    return n;
+}
+
+Node *matrix_getLastNodeOfColumn(Matrix *m, int column)
+{
+    Node *n = m->columnsHeads[column];
+
+    while (n->nextOnColumn != NULL)
+        n = n->nextOnColumn;
+
+    return n;
+}
+
+Matrix *matrix_read()
+{
+    int numberOfLines=0, numberOfColumns=0;
+    double v=0.0;
+
+    printf("Number of lines:");
+    scanf("%d", &numberOfLines);
+    printf("Number of columns:");
+    scanf("%d", &numberOfColumns);
+
+    Matrix *m = matrix_construct(numberOfLines, numberOfColumns);
+
+    printf("Enter the matrix:\n");
+
+    for (int y=0; y < numberOfLines; y++)
+    {
+        for (int x=0; x < numberOfColumns; x++)
+        {
+            scanf("%lf", &v);
+            if (v != 0.0)
+            {
+                Node *n = node_construct(v, y, x, NULL, NULL);
+
+                if (m->linesHeads[y] == NULL)
+                {
+                    // Set this node as the line 'y' head
+                    m->linesHeads[y] = n;
+                
+                } else {
+                    // Set the 'nextOnLine' prop of the last node of the line 'y' as this node
+                    Node *prevOnLine = matrix_getLastNodeOfLine(m, y);
+                    prevOnLine->nextOnLine = n;
+                }
+
+                if (m->columnsHeads[x] == NULL)
+                {
+                    // Set this node as the column 'x' head
+                    m->columnsHeads[x] = n;
+
+                } else {
+                    //Set the 'nextOnColumn' prop of the last node of the column 'x' as this node
+                    Node *prevOnColumn = matrix_getLastNodeOfColumn(m, x);
+                    prevOnColumn->nextOnColumn = n;
+                }
+            }
+        }
+    }
+    return m;
 }
