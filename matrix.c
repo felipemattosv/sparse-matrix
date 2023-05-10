@@ -100,3 +100,41 @@ Matrix *matrix_read()
     }
     return m;
 }
+
+void matrix_showSparse(Matrix *m)
+{
+    for (int y=0; y < m->numberOfLines; y++)
+    {   
+        Node *n = m->linesHeads[y];
+
+        while (n != NULL)
+        {
+            printf("[%d, %d]: %.2lf\n", n->line, n->column, n->value);
+            n = n->nextOnLine;
+        }
+    }
+}
+
+void matrix_showDense(Matrix *m)
+{
+    for (int y=0; y < m->numberOfLines; y++)
+    {
+        Node *n = m->linesHeads[y];
+
+        for (int x=0; x < m->numberOfColumns; x++)
+        {
+            if (n->column == x)
+            {
+                printf("%.2lf", n->value);
+                if (n->nextOnLine != NULL)
+                    n = n->nextOnLine;
+            
+            } else
+                printf("0.00");
+
+            if (x < m->numberOfColumns -1)
+                printf(" ");
+        }
+        printf("\n");
+    }
+}

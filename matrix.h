@@ -40,4 +40,16 @@ The number of cycles depends on the dimension (nXm) of the input matrix.
 */
 Matrix *matrix_read();
 
+/* Complexity: O(N);
+Goes through all the nodes of the matrix and prints their position and value.
+The number of cycles depends on the number of nodes (N) in the matrix.
+*/
+void matrix_showSparse(Matrix *);
+
+/* Complexity: O(n*m);
+Uses 2 nested loops to got through each position and print it's value.
+The number of cycles depends on the dimension (nXm) of the output matrix.
+*/
+void matrix_showDense(Matrix *);
+
 #endif
