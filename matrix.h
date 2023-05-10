@@ -16,24 +16,21 @@ Only memory allocation and assignments.
 */
 Matrix *matrix_construct(int, int);
 
-/* Complexity: O(n*m);
-Goes through each node destroying it. For that, uses 2 nested loops.
-The number of cycles depends on the dimension (nXm) of the sparse matrix.
-Note: The worst case occurs when all columns are filled with non-zeros.
+/* Complexity: O(N);
+Goes through each node destroying it.
+The number of cycles depends on the number of nodes (N) on the matrix.
 */
 void matrix_destroy(Matrix *);
 
-/* Complexity: O(m);
-Uses a loop to go through all the nodes of the line until reaching the last one.
-The number of cycles depends on the number of columns (m) of the matrix.
-Note: The worst case occurs when all elements of the line are non-zeros.
+/* Complexity: O(N);
+Uses a loop to reach the last node of a line and return it.
+The number of cycles depends on the number of nodes (N) in the line.
 */
 Node *matrix_getLastNodeOfLine(Matrix *, int);
 
-/* Complexity: O(n);
-Uses a loop to go through all the nodes of the column until reaching the last one.
-The number of cycles depends on the number of lines (n) of the matrix.
-Note: The worst case occurs when all elements of the column are non-zeros.
+/* Complexity: O(N);
+Uses a loop to reach the last node of a column and return it.
+The number of cycles depends on the number of nodes (N) in the column.
 */
 Node *matrix_getLastNodeOfColumn(Matrix *, int);
 
