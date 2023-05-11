@@ -52,4 +52,11 @@ The number of cycles depends on the dimension (nXm) of the output matrix.
 */
 void matrix_showDense(Matrix *);
 
+/* Complexity: O(n+m);
+Inserts a value at a given position.
+First, it inserts the node in the line's list, with complexity O(n), where 'n' is the number of nodes in the line.
+Then, inserts the node in the column's list, with complexity O(m), where 'm' is the number of nodes in the column.
+*/
+void matrix_insert(Matrix *, int, int, double);
+
 #endif

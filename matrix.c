@@ -155,3 +155,66 @@ void matrix_showDense(Matrix *m)
         printf("\n");
     }
 }
+
+void matrix_insert(Matrix *m, int l, int c, double v)
+{
+    if (!v)
+    {
+        printf("Error: You cannot insert a node with value equal to zero!\n");
+        return;
+    }
+
+    if (l < 0 || l >= m->numberOfLines || c < 0 || c >= m->numberOfColumns)
+    {
+        printf("Error: Position outside the bounds of the matrix!\n");
+        return;
+    }
+
+    Node *newNode = node_construct(v, l, c, NULL, NULL);
+
+    // Insert the new node in the forward list of line l
+    Node *n = m->linesHeads[l];
+    Node *prevNode = NULL;
+    
+    while (n != NULL && n->column < c)
+    {
+        prevNode = n;
+        n = n->nextOnLine;
+    }
+    
+    if (prevNode == NULL)
+    {
+        // The new node will be the first in the list
+        newNode->nextOnLine = n;
+        m->linesHeads[l] = newNode;
+    }
+    else
+    {
+        // The new node will be inserted after prevNode
+        newNode->nextOnLine = prevNode->nextOnLine;
+        prevNode->nextOnLine = newNode;
+    }
+
+    // Insert the new node in the forward list of column c
+    n = m->columnsHeads[c];
+    prevNode = NULL;
+    
+    while (n != NULL && n->line < l)
+    {
+        prevNode = n;
+        n = n->nextOnColumn;
+    }
+
+    if (prevNode == NULL)
+    {
+        // The new node will be the first in the list
+        newNode->nextOnColumn = n;
+        m->columnsHeads[c] = newNode;
+    }
+    else
+    {
+        // The new node will be inserted after prevNode
+        newNode->nextOnColumn = prevNode->nextOnColumn;
+        prevNode->nextOnColumn = newNode;
+    }
+}
