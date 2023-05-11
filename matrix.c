@@ -5,6 +5,9 @@
 
 Matrix *matrix_construct(int numberOfLines, int numberOfColumns)
 {
+    if (numberOfLines <= 0 || numberOfColumns <= 0)
+        exit(printf("Fatal Error: You cannot create a matrix with these dimensions!\n"));
+
     Matrix *m = (Matrix *)malloc(1 * sizeof(Matrix));
     m->numberOfLines = numberOfLines;
     m->numberOfColumns = numberOfColumns;
