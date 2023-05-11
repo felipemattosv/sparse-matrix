@@ -47,7 +47,7 @@ The number of cycles depends on the number of nodes (N) in the matrix.
 void matrix_showSparse(Matrix *);
 
 /* Complexity: O(n*m);
-Uses 2 nested loops to got through each position and print it's value.
+Uses 2 nested loops to go through each position and print its value.
 The number of cycles depends on the dimension (nXm) of the output matrix.
 */
 void matrix_showDense(Matrix *);

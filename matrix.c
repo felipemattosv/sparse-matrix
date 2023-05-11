@@ -121,19 +121,33 @@ void matrix_showDense(Matrix *m)
     {
         Node *n = m->linesHeads[y];
 
-        for (int x=0; x < m->numberOfColumns; x++)
+        if (n == NULL)
         {
-            if (n->column == x)
+            // line is empty
+            for (int x=0; x < m->numberOfColumns; x++)
             {
-                printf("%.2lf", n->value);
-                if (n->nextOnLine != NULL)
-                    n = n->nextOnLine;
-            
-            } else
                 printf("0.00");
+                if (x < m->numberOfColumns -1)
+                    printf(" ");
+            }
+        }
+        else
+        {
+            // line is not empty
+            for (int x=0; x < m->numberOfColumns; x++)
+            {
+                if (n->column == x)
+                {
+                    printf("%.2lf", n->value);
+                    if (n->nextOnLine != NULL)
+                        n = n->nextOnLine;
+                
+                } else
+                    printf("0.00");
 
-            if (x < m->numberOfColumns -1)
-                printf(" ");
+                if (x < m->numberOfColumns -1)
+                    printf(" ");
+            }
         }
         printf("\n");
     }
