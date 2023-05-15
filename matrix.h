@@ -22,21 +22,10 @@ The number of cycles depends on the number of nodes (N) on the matrix.
 */
 void matrix_destroy(Matrix *);
 
-/* Complexity: O(N);
-Uses a loop to reach the last node of a line and return it.
-The number of cycles depends on the number of nodes (N) in the line.
-*/
-Node *matrix_getLastNodeOfLine(Matrix *, int);
-
-/* Complexity: O(N);
-Uses a loop to reach the last node of a column and return it.
-The number of cycles depends on the number of nodes (N) in the column.
-*/
-Node *matrix_getLastNodeOfColumn(Matrix *, int);
-
-/* Complexity: O(n*m);
+/* Complexity: O(N*n+N*m);
 Reads the matrix from the terminal, using 2 nested loops to go through each position and save non-zeros.
-The number of cycles depends on the dimension (nXm) of the input matrix.
+To save, uses the insert function.
+In short, does 'N' inserts (each one with complexity O(n+m)), where N is the number of non-zeros on the input matrix.
 */
 Matrix *matrix_read();
 

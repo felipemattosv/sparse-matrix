@@ -34,26 +34,6 @@ void matrix_destroy(Matrix *m)
     free(m);
 }
 
-Node *matrix_getLastNodeOfLine(Matrix *m, int line)
-{
-    Node *n = m->linesHeads[line];
-    
-    while (n->nextOnLine != NULL)
-        n = n->nextOnLine;
-
-    return n;
-}
-
-Node *matrix_getLastNodeOfColumn(Matrix *m, int column)
-{
-    Node *n = m->columnsHeads[column];
-
-    while (n->nextOnColumn != NULL)
-        n = n->nextOnColumn;
-
-    return n;
-}
-
 Matrix *matrix_read()
 {
     int numberOfLines=0, numberOfColumns=0;
@@ -74,31 +54,7 @@ Matrix *matrix_read()
         {
             scanf("%lf", &v);
             if (v != 0.0)
-            {
-                Node *n = node_construct(v, y, x, NULL, NULL);
-
-                if (m->linesHeads[y] == NULL)
-                {
-                    // Set this node as the line 'y' head
-                    m->linesHeads[y] = n;
-                
-                } else {
-                    // Set the 'nextOnLine' prop of the last node of the line 'y' as this node
-                    Node *prevOnLine = matrix_getLastNodeOfLine(m, y);
-                    prevOnLine->nextOnLine = n;
-                }
-
-                if (m->columnsHeads[x] == NULL)
-                {
-                    // Set this node as the column 'x' head
-                    m->columnsHeads[x] = n;
-
-                } else {
-                    //Set the 'nextOnColumn' prop of the last node of the column 'x' as this node
-                    Node *prevOnColumn = matrix_getLastNodeOfColumn(m, x);
-                    prevOnColumn->nextOnColumn = n;
-                }
-            }
+                matrix_insert(m, y, x, v);
         }
     }
     return m;
