@@ -66,4 +66,11 @@ The number of cycles depends on the number of nodes (N) on the searched line.
 */
 double matrix_get(Matrix *, int, int);
 
+/* Complexity: O(N*n+N*m);
+Returns a new matrix obtained by multiplying the input matrix by the given scalar.
+For that, uses 2 nested loops and for each node in the input matrix, inserts a node in the output matrix.
+In short, does 'N' inserts (each one with complexity O(n+m)), where N is the number of nodes on the input matrix.
+*/
+Matrix *matrix_multiplyByScalar(Matrix *, double);
+
 #endif

@@ -245,3 +245,23 @@ double matrix_get(Matrix *m, int l, int c)
     else
         return 0;
 }
+
+Matrix *matrix_multiplyByScalar(Matrix *in, double scalar)
+{
+    Matrix *out = matrix_construct(in->numberOfLines, in->numberOfColumns);
+
+    for (int y=0; y < in->numberOfLines; y++)
+    {
+        Node *n = in->linesHeads[y];
+        Node *next = NULL;
+
+        while (n != NULL)
+        {
+            next = n->nextOnLine;
+            matrix_insert(out, y, n->column, (n->value * scalar));
+            n = next;
+        }
+    }
+
+    return out;
+}
