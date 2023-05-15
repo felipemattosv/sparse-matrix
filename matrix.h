@@ -59,4 +59,11 @@ Then, inserts the node in the column's list, with complexity O(m), where 'm' is 
 */
 void matrix_insert(Matrix *, int, int, double);
 
+/* Complexity: O(N);
+Returns the value at a given position.
+First accesses the head of the line, then iterates to the searched column.
+The number of cycles depends on the number of nodes (N) on the searched line.
+*/
+double matrix_get(Matrix *, int, int);
+
 #endif

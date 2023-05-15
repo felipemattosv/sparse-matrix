@@ -218,3 +218,30 @@ void matrix_insert(Matrix *m, int l, int c, double v)
         prevNode->nextOnColumn = newNode;
     }
 }
+
+double matrix_get(Matrix *m, int l, int c)
+{
+    if (l < 0 || l >= m->numberOfLines || c < 0 || c >= m->numberOfColumns)
+        return 0;
+
+    Node *n = m->linesHeads[l];
+    Node *next = NULL;
+    int found = 0;
+
+    while (n != NULL && n->column <= c)
+    {
+        if (n->column == c)
+        {
+            found = 1;
+            break;
+        }
+
+        next = n->nextOnLine;
+        n = next;
+    }
+
+    if (found)
+        return n->value;
+    else
+        return 0;
+}
