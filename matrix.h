@@ -69,4 +69,11 @@ In short, does 'q' inserts (each one with complexity O(n+m)), where 'q' is the n
 */
 Matrix *matrix_sum(Matrix *, Matrix *);
 
+/* Complexity: O(q*n+q*m);
+Returns a new matrix obtained by element-wise multiplication between the input matrices.
+For each position where the product is different from zero, inserts an element in the output matrix.
+In short, does 'q' inserts (each one with complexity O(n+m)), where 'q' is the number of non-zero products.
+*/
+Matrix *matrix_multipliesElementWise(Matrix *, Matrix *);
+
 #endif
