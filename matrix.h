@@ -62,4 +62,11 @@ In short, does 'N' inserts (each one with complexity O(n+m)), where N is the num
 */
 Matrix *matrix_multiplyByScalar(Matrix *, double);
 
+/* Complexity: O(q*n+q*m);
+Returns a new matrix obtained by adding the two input matrices.
+For each position where the sum is different from zero, inserts an element in the output matrix.
+In short, does 'q' inserts (each one with complexity O(n+m)), where 'q' is the number of non-zero sums.
+*/
+Matrix *matrix_sum(Matrix *, Matrix *);
+
 #endif

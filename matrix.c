@@ -221,3 +221,40 @@ Matrix *matrix_multiplyByScalar(Matrix *in, double scalar)
 
     return out;
 }
+
+Matrix *matrix_sum(Matrix *a, Matrix *b)
+{
+    Matrix *out = matrix_construct(a->numberOfLines, a->numberOfColumns);
+
+    for (int y=0; y < a->numberOfLines; y++)
+    {
+        Node *nA = a->linesHeads[y];
+        Node *nB = b->linesHeads[y];
+
+        for (int x=0; x < a->numberOfColumns; x++)
+        {
+            if (nA == NULL && nB == NULL)
+                break;
+
+            double valueA = 0;
+            double valueB = 0;
+
+            if (nA != NULL && nA->column == x)
+            {
+                valueA = nA->value;
+                nA = nA->nextOnLine;
+            }
+
+            if (nB != NULL && nB->column == x)
+            {
+                valueB = nB->value;
+                nB = nB->nextOnLine;
+            }
+
+            double sum = valueA + valueB;
+            if (sum != 0)
+                matrix_insert(out, y, x, sum);
+        }
+    }
+    return out;
+}
