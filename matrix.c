@@ -295,3 +295,60 @@ Matrix *matrix_multipliesElementWise(Matrix *a, Matrix *b)
     }
     return out;
 }
+
+Matrix *matrix_multiply(Matrix *a, Matrix *b)
+{
+    Matrix *out = matrix_construct(a->numberOfLines, b->numberOfColumns);
+
+    int countLine = 0;
+    int countColumn = 0;
+
+    // At each iteration, calculates the value of the resulting matrix element at the current position
+    for (int externalCount=0; externalCount < (a->numberOfLines * b->numberOfColumns); externalCount++)
+    {
+        Node *nA = a->linesHeads[countLine];
+        Node *nB = b->columnsHeads[countColumn];
+
+        int internalCount = 0;
+         double sum = 0;
+
+        // Iterates over the columns of matrix 'a' and the lines of matrix 'b' simultaneously
+        // multiplying and adding the corresponding elements
+        while (internalCount < a->numberOfColumns)
+        {
+            double valueA = 0;
+            double valueB = 0;
+
+            if (nA != NULL && nA->column == internalCount)
+            {
+                valueA = nA->value;
+                nA = nA->nextOnLine;
+            }
+
+            if (nB != NULL && nB->line == internalCount)
+            {
+                valueB = nB->value;
+                nB = nB->nextOnColumn;
+            }
+
+            sum += valueA * valueB;
+            
+            internalCount++;
+        }
+
+        if (sum != 0)
+            matrix_insert(out, countLine, countColumn, sum);
+
+        // Update counters, checking if the iteration has reached the end of a line
+        if (countColumn == (b->numberOfColumns - 1))
+        {
+            countColumn = 0;
+            countLine++;
+        }
+        else {
+            countColumn++;
+        }
+    }
+
+    return out;
+}

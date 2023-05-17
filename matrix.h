@@ -76,4 +76,11 @@ In short, does 'q' inserts (each one with complexity O(n+m)), where 'q' is the n
 */
 Matrix *matrix_multipliesElementWise(Matrix *, Matrix *);
 
+/* Complexity: O(q*n+q*m);
+Returns a new matrix obtained by the multiplication between the input matrices.
+For each non-zero element obtained, inserts an element in the output matrix.
+In short, does 'q' inserts (each one with complexity O(n+m)), where 'q' is the number of non-zeros at the output matrix.
+*/
+Matrix *matrix_multiply(Matrix *, Matrix *);
+
 #endif
