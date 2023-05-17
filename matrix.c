@@ -224,6 +224,9 @@ Matrix *matrix_multiplyByScalar(Matrix *in, double scalar)
 
 Matrix *matrix_sum(Matrix *a, Matrix *b)
 {
+    if (a->numberOfLines != b->numberOfLines || a->numberOfColumns != b->numberOfColumns)
+        exit(printf("Error: Cannot add matrices with different dimensions!\n"));
+
     Matrix *out = matrix_construct(a->numberOfLines, a->numberOfColumns);
 
     for (int y=0; y < a->numberOfLines; y++)
@@ -261,6 +264,9 @@ Matrix *matrix_sum(Matrix *a, Matrix *b)
 
 Matrix *matrix_multipliesElementWise(Matrix *a, Matrix *b)
 {
+    if (a->numberOfLines != b->numberOfLines || a->numberOfColumns != b->numberOfColumns)
+        exit(printf("Error: Cannot multiply element-wise two matrices with different dimensions!\n"));
+
     Matrix *out = matrix_construct(a->numberOfLines, a->numberOfColumns);
 
     for (int y=0; y < a->numberOfLines; y++)
@@ -298,6 +304,9 @@ Matrix *matrix_multipliesElementWise(Matrix *a, Matrix *b)
 
 Matrix *matrix_multiply(Matrix *a, Matrix *b)
 {
+    if (a->numberOfColumns != b->numberOfLines)
+        exit(printf("Error: Cannot multiply matrices with these dimensions!\n"));
+
     Matrix *out = matrix_construct(a->numberOfLines, b->numberOfColumns);
 
     int countLine = 0;
