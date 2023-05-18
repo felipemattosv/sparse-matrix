@@ -411,3 +411,33 @@ Matrix *matrix_multiply(Matrix *a, Matrix *b)
 
     return out;
 }
+
+Matrix *matrix_slice(Matrix *m, int beginLine, int beginColumn, int endLine, int endColumn)
+{
+    Matrix *out = matrix_construct((endLine - beginLine) + 1, (endColumn - beginColumn) + 1);
+
+    int countLine = beginLine;
+
+    // Goes through all lines in the range
+    for (int externalCount = 0; externalCount <= (endLine - beginLine); externalCount++)
+    {    
+        Node *current = m->linesHeads[countLine];
+
+        // Finds the first node on the current line
+        while (current != NULL && current->column < beginColumn)
+        {
+            current = current->nextOnLine;
+        }
+
+        // Loops through the nodes of the current line that are in the range, inserting them into the output matrix
+        while (current != NULL && current->column <= endColumn)
+        {
+            matrix_insert(out, externalCount, (current->column - beginColumn), current->value);
+            current = current->nextOnLine;
+        }
+
+        countLine++;
+    }
+
+    return out;
+}

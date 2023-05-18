@@ -83,4 +83,11 @@ In short, does 'q' inserts (each one with complexity O(n+m)), where 'q' is the n
 */
 Matrix *matrix_multiply(Matrix *, Matrix *);
 
+/* Complexity: O(N*n+N*m);
+Returns the rectangular submatrix defined by an upper left (start) point and a bottom right point (end).
+For each non-zero element in the range, inserts an element in the submatrix.
+In short, does 'N' inserts (each one with complexity O(n+m)) where 'N' is the number of non-zeros in the range.
+*/
+Matrix *matrix_slice(Matrix *, int, int, int, int);
+
 #endif
