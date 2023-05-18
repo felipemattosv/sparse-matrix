@@ -114,65 +114,115 @@ void matrix_showDense(Matrix *m)
 
 void matrix_insert(Matrix *m, int l, int c, double v)
 {
-    if (!v)
-    {
-        printf("Error: You cannot insert a node with value equal to zero!\n");
-        return;
-    }
-
-    if (l < 0 || l >= m->numberOfLines || c < 0 || c >= m->numberOfColumns)
+    if (l < 0 || c < 0 || l >= m->numberOfLines || c >= m->numberOfColumns)
     {
         printf("Error: Position outside the bounds of the matrix!\n");
         return;
     }
 
-    Node *newNode = node_construct(v, l, c, NULL, NULL);
+    // If there is a node at position (l, c), destroy it and rearrange pointers
+    if (v == 0)
+    {
+        if (matrix_get(m, l, c) == 0.0)
+            return;
 
-    // Insert the new node in the forward list of line l
-    Node *n = m->linesHeads[l];
-    Node *prevNode = NULL;
-    
-    while (n != NULL && n->column < c)
-    {
-        prevNode = n;
-        n = n->nextOnLine;
+        Node *currentOnLine = m->linesHeads[l];
+        Node *prevOnLine = NULL;
+
+        while(currentOnLine->nextOnLine != NULL && currentOnLine->nextOnLine->column <= c)
+        {
+            prevOnLine = currentOnLine;
+            currentOnLine = currentOnLine->nextOnLine;
+        }
+
+        if (currentOnLine->column == c)
+        {
+            if (prevOnLine != NULL)
+                prevOnLine->nextOnLine = currentOnLine->nextOnLine;
+
+            if (currentOnLine->column == m->linesHeads[l]->column)
+            {
+                m->linesHeads[l] = currentOnLine->nextOnLine;
+            }
+
+        }
+
+        Node *currentOnColumn = m->columnsHeads[c];
+        Node *prevOnColumn = NULL;
+
+        while (currentOnColumn->nextOnColumn != NULL && currentOnColumn->nextOnColumn->line <= l)
+        {
+            prevOnColumn = currentOnColumn;
+            currentOnColumn = currentOnColumn->nextOnColumn;
+        }
+
+        if (currentOnColumn->line == l)
+        {   
+            if (prevOnColumn != NULL)
+                prevOnColumn->nextOnColumn = currentOnColumn->nextOnColumn;
+
+            if (currentOnColumn->line == m->columnsHeads[c]->line)
+            {
+                m->columnsHeads[c] = currentOnColumn->nextOnColumn;
+            }
+
+            node_destroy(currentOnColumn);
+        }
     }
-    
-    if (prevNode == NULL)
-    {
-        // The new node will be the first in the list
-        newNode->nextOnLine = n;
-        m->linesHeads[l] = newNode;
-    }
+    // Insert a node at position (l,c) with value 'v'
     else
     {
-        // The new node will be inserted after prevNode
-        newNode->nextOnLine = prevNode->nextOnLine;
-        prevNode->nextOnLine = newNode;
-    }
+        Node *newNode = node_construct(v, l, c, NULL, NULL);
 
-    // Insert the new node in the forward list of column c
-    n = m->columnsHeads[c];
-    prevNode = NULL;
-    
-    while (n != NULL && n->line < l)
-    {
-        prevNode = n;
-        n = n->nextOnColumn;
-    }
+        // Insert the node in the forward list of line 'l'
+        if (m->linesHeads[l] == NULL || c < m->linesHeads[l]->column)
+        {
+            newNode->nextOnLine = m->linesHeads[l];
+            m->linesHeads[l] = newNode;
+        }
+        else
+        {
+            Node *current = m->linesHeads[l];
+            while (current->nextOnLine != NULL && current->nextOnLine->column <= c)
+            {
+                current = current->nextOnLine;
+            }
+            if (current->column < c)
+            {
+                newNode->nextOnLine = current->nextOnLine;
+                current->nextOnLine = newNode;
+            }
 
-    if (prevNode == NULL)
-    {
-        // The new node will be the first in the list
-        newNode->nextOnColumn = n;
-        m->columnsHeads[c] = newNode;
-    }
-    else
-    {
-        // The new node will be inserted after prevNode
-        newNode->nextOnColumn = prevNode->nextOnColumn;
-        prevNode->nextOnColumn = newNode;
-    }
+            // There is already a node at position (l, c), so just changes its value
+            // Note that it is not necessary to repeat this when iterating over the column as the node would be the same
+            else if (current->column == c)
+            {
+                current->value = v;
+                node_destroy(newNode);
+            }
+        }
+
+        // Insert the node in the forward list of column 'c'
+        if (m->columnsHeads[c] == NULL || l < m->columnsHeads[c]->line)
+        {
+            newNode->nextOnColumn = m->columnsHeads[c];
+            m->columnsHeads[c] = newNode;
+        }
+        else
+        {
+            Node *current = m->columnsHeads[c];
+            while (current->nextOnColumn != NULL && current->nextOnColumn->line <= l)
+            {
+                current = current->nextOnColumn;
+            }
+            
+            if (current->line < l)
+            {
+            newNode->nextOnColumn = current->nextOnColumn;
+                current->nextOnColumn = newNode; 
+            }
+        }
+    }  
 }
 
 double matrix_get(Matrix *m, int l, int c)
