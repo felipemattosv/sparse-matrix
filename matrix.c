@@ -441,3 +441,59 @@ Matrix *matrix_slice(Matrix *m, int beginLine, int beginColumn, int endLine, int
 
     return out;
 }
+
+void matrix_swapLines(Matrix *m, int lineA, int lineB)
+{
+    if (lineA < 0 || lineB < 0 || lineA >= m->numberOfLines || lineB >= m->numberOfLines)
+    {
+        printf("Error: lines outside the matrix range!\n");
+        return;
+    }
+
+    if (lineA == lineB)
+        return;
+
+    for (int countColumn = 0; countColumn < m->numberOfColumns; countColumn++)
+    {   
+        if (m->columnsHeads[countColumn] == NULL)
+            continue; // If the column is composed only of zeros, go to next iteration
+
+        Node *nA = m->columnsHeads[countColumn];
+        Node *nB = m->columnsHeads[countColumn];
+
+        // Get the node of lineA
+        while (nA->nextOnColumn != NULL && nA->nextOnColumn->line <= lineA)
+        {
+            nA = nA->nextOnColumn;
+        }
+        
+        // Get the node of lineB
+        while (nB->nextOnColumn != NULL && nB->nextOnColumn->line <= lineB)
+        {
+            nB = nB->nextOnColumn;
+        }
+
+        if (nA->line == lineA && nB->line == lineB)
+        {
+            // Both nodes already exists, only change values
+            double aux = nA->value;
+            nA->value = nB->value;
+            nB->value = aux;
+        }
+        else
+        {
+            if (nA->line == lineA && nB->line != lineB)
+            {
+                //Only nA already exists
+                matrix_insert(m, lineB, countColumn, nA->value); //Insert a node in lineB
+                matrix_insert(m, lineA, countColumn, 0); //Destroys the node in lineA
+            }
+            else if (nA->line != lineA && nB->line == lineB)
+            {
+                //Only nB already exists
+                matrix_insert(m, lineA, countColumn, nB->value); //Insert a node in lineA
+                matrix_insert(m, lineB, countColumn, 0); //Destroys the node in lineB
+            }
+        }
+    }
+}

@@ -90,4 +90,11 @@ In short, does 'N' inserts (each one with complexity O(n+m)) where 'N' is the nu
 */
 Matrix *matrix_slice(Matrix *, int, int, int, int);
 
+/* Complexity: O(q*n+q*m);
+Swaps (in place) the position between two lines of the matrix.
+For that, uses a loop to go through each column changing the elements between the input lines.
+Except for the best case, does '2q' insertions (each one with complexity O(n+m)), where 'q' is the number of columns of the matrix.
+*/
+void matrix_swapLines(Matrix *, int, int);
+
 #endif
