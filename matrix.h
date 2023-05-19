@@ -97,4 +97,11 @@ Except for the best case, does '2q' insertions (each one with complexity O(n+m))
 */
 void matrix_swapLines(Matrix *, int, int);
 
+/* Complexity: O(q*n+q*m);
+Swaps (in-place) the position between two columns of the matrix.
+For that, uses a loop to go through each line changing the elements between the input columns.
+Except for the best case, does '2q' insertions (each one with complexity O(n+m)), where 'q' is the number of lines of the matrix.
+*/
+void matrix_swapColumns(Matrix *, int, int);
+
 #endif
