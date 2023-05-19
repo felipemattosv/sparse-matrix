@@ -127,4 +127,18 @@ In short, does 'p*q' slices (each one O(N*n+N*m)), where 'p' and 'q' are the dim
 */
 Matrix *matrix_convolution(Matrix *, Matrix *);
 
+/* Complexity: O(N);
+Generates a binary file to save the input matrix.
+For that, uses 2 nested loops to go through each node in the matrix, writing its infos on the file.
+The number of cycles depends on the number of non-zeros (N) in the input matrix.
+*/
+void matrix_writeBin(Matrix *, char *);
+
+/* Complexity: O(N*n+N*m);
+Returns the matrix that have been saved in the binary located on the input path.
+For that, goes through the file inserting the nodes in the output matrix.
+In short, does 'N' inserts (each one with complexity O(n+m)), where 'N' is the number of non-zeros in the file's matrix.
+*/
+Matrix *matrix_readBin(char *);
+
 #endif

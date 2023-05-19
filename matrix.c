@@ -630,3 +630,72 @@ Matrix *matrix_convolution(Matrix *in, Matrix *kernel)
 
     return out;
 }
+
+void matrix_writeBin(Matrix *m, char *path)
+{
+    FILE *bin = fopen(path, "wb");
+
+    if (bin == NULL)
+    {
+        printf("Error: Cannot create the binary in '%s'!\n", path);
+        return;
+    }
+
+    fwrite(&m->numberOfLines, sizeof(int), 1, bin);
+    fwrite(&m->numberOfColumns, sizeof(int), 1, bin);
+
+    // Goes through each node, writing it
+    for (int y=0; y < m->numberOfLines; y++)
+    {
+        Node *current = m->linesHeads[y];
+
+        while (current != NULL)
+        {
+            // Writes the node
+            fwrite(&current->line, sizeof(int), 1, bin);
+            fwrite(&current->column, sizeof(int), 1, bin);
+            fwrite(&current->value, sizeof(double), 1, bin);
+
+            current = current->nextOnLine;
+        }
+    }
+
+    fclose(bin);
+}
+
+Matrix *matrix_readBin(char *path)
+{
+    FILE *bin = fopen(path, "rb");
+
+    if (bin == NULL)
+    {
+        exit(printf("Error: Binary not found at '%s'!\n", path));
+    }
+
+    int numberOfLines=0;
+    int numberOfColumns=0;
+
+    fread(&numberOfLines, sizeof(int), 1, bin);
+    fread(&numberOfColumns, sizeof(int), 1, bin);
+
+    Matrix *m = matrix_construct(numberOfLines, numberOfColumns);
+    
+    while (!feof(bin))
+    {
+        // Reads a new node
+        int line=0;
+        int column=0;
+        double value=0.0;
+
+        fread(&line, sizeof(int), 1, bin);
+        fread(&column, sizeof(int), 1, bin);
+        int readNewNode = fread(&value, sizeof(double), 1, bin);
+
+        if (readNewNode != 0)
+            matrix_insert(m, line, column, value);
+    }
+
+    fclose(bin);
+
+    return m;
+}
