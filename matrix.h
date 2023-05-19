@@ -111,4 +111,20 @@ In short, does 'N' inserts (each one with complexity O(n+m)) where 'N' is the nu
 */
 Matrix *matrix_transpose(Matrix *);
 
+/* Complexity: O(N);
+Returns the sum of all values of the input matrix.
+For that, uses 2 nested loops to go throught each node of the matrix.
+The number of cycles depends on the number of non-zeros (N) in the input matrix.
+*/
+double matrix_sumAllValues(Matrix *);
+
+/* Complexity: O((p*q)*(N*n+N*m));
+Returns the result of the convolution between the input matrix and the input kernel.
+For that, uses 2 nested loops to go throught each position of the input matrix.
+For each position, does a slice, multiplies element-wise, sums all values and, if sum != zero, inserts a node in the output matrix.
+So the complexity will be determined by the most complex function, which is the slice.
+In short, does 'p*q' slices (each one O(N*n+N*m)), where 'p' and 'q' are the dimensions of the input matrix.
+*/
+Matrix *matrix_convolution(Matrix *, Matrix *);
+
 #endif

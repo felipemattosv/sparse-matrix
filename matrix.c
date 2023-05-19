@@ -420,7 +420,18 @@ Matrix *matrix_slice(Matrix *m, int beginLine, int beginColumn, int endLine, int
 
     // Goes through all lines in the range
     for (int externalCount = 0; externalCount <= (endLine - beginLine); externalCount++)
-    {    
+    {
+        // If the input positions are outside the bounds of the matrix, considers zeros (use for convolution)
+        if (countLine < 0)
+        {
+            countLine++;
+            continue;
+        }
+        if (countLine >= m->numberOfLines)
+        {
+            break;
+        }
+
         Node *current = m->linesHeads[countLine];
 
         // Finds the first node on the current line
@@ -571,4 +582,51 @@ Matrix *matrix_transpose(Matrix *m)
     }
 
     return t;
+}
+
+double matrix_sumAllValues(Matrix *m)
+{
+    double sum=0.0;
+
+    for (int countLine=0; countLine < m->numberOfLines; countLine++)
+    {
+        Node *current = m->linesHeads[countLine];
+
+        while (current != NULL)
+        {
+            sum += current->value;
+            current = current->nextOnLine;
+        }
+    }
+
+    return sum;
+}
+
+Matrix *matrix_convolution(Matrix *in, Matrix *kernel)
+{
+    Matrix *out = matrix_construct(in->numberOfLines, in->numberOfColumns);
+
+    // calcules the sb (slice border)
+    int sb = ((kernel->numberOfLines - 1) / 2);
+
+    // Goes throught each position
+    for (int countLine=0; countLine < in->numberOfLines; countLine++)
+    {
+        for (int countColumn=0; countColumn < in->numberOfColumns; countColumn++)
+        {
+            Matrix *submatrix = matrix_slice(in, (countLine - sb), (countColumn - sb), (countLine + sb), (countColumn + sb));
+
+            Matrix *product = matrix_multipliesElementWise(submatrix, kernel);
+
+            double sum = matrix_sumAllValues(product);
+
+            if (sum != 0)
+                matrix_insert(out, countLine, countColumn, sum);
+
+            matrix_destroy(submatrix);
+            matrix_destroy(product);
+        }
+    }
+
+    return out;
 }
