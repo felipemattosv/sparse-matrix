@@ -104,4 +104,11 @@ Except for the best case, does '2q' insertions (each one with complexity O(n+m))
 */
 void matrix_swapColumns(Matrix *, int, int);
 
+/* Complexity: O(N*n+N*m);
+Returns the transposed of the input matrix.
+For that, uses two nested loops to go throught each node in the input matrix, inserting a node in the transposed.
+In short, does 'N' inserts (each one with complexity O(n+m)) where 'N' is the number of non-zeros in the input matrix.
+*/
+Matrix *matrix_transpose(Matrix *);
+
 #endif

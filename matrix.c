@@ -553,3 +553,22 @@ void matrix_swapColumns(Matrix *m, int columnA, int columnB)
         }
     }
 }
+
+Matrix *matrix_transpose(Matrix *m)
+{
+    Matrix *t = matrix_construct(m->numberOfColumns, m->numberOfLines);
+
+    // Goes throught each column, creating the lines of the transposed
+    for (int countColumn=0; countColumn < m->numberOfColumns; countColumn++)
+    {
+        Node *current = m->columnsHeads[countColumn];
+
+        while (current != NULL)
+        {
+            matrix_insert(t, countColumn, current->line, current->value);
+            current = current->nextOnColumn;
+        }
+    }
+
+    return t;
+}
